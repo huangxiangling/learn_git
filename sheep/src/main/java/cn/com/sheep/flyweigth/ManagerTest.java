@@ -12,5 +12,6 @@ public class ManagerTest {
         IReportManager financialReportManager = managerFactory.getFinancialReportManager("A");
         String report = financialReportManager.createReport();
         System.out.println(report);
+        System.out.println("提交git");
     }
 }
