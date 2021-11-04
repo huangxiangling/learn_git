@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.sheep.dao.SheepTestMapper">
+
+    <resultMap id="paramMap" type="cn.com.sheep.model.po.SheepTest">
+        <result column="account_no" property="accountNo"/>
+        <result column="account_name" property="accountName"/>
+        <result column="bank" property="bank"/>
+    </resultMap>
+
+    <select id="selectList" resultMap="paramMap">
+        select * from cn_account
+    </select>
+</mapper>
