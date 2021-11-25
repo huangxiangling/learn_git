@@ -1,0 +1,36 @@
+netty使用总结
+
+netty重要组件类库：
+     1.ServerBootstrap netty启动类（直接new出来），需要绑定事件工作线程组和具体处理业务的Handler（HttpInitializer），如下
+	   b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new HttpInitializer());
+					
+	   启动类可以设置请求的优化参数ChannelOption。
+	   
+       最后开启netty服务监听Channel，如下
+       Channel ch = b.bind(port).sync().channel();
+       System.out.println("开启netty http服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');
+       ch.closeFuture().sync();	   
+					
+	 2.EventLoopGroup 事件工作线程组，可以定义请求服务的线程组和业务处理线程组，如下
+	   EventLoopGroup bossGroup = new NioEventLoopGroup(2);  // 定义请求服务处理的线程有2个
+       EventLoopGroup workerGroup = new NioEventLoopGroup(16); // 定义处理业务服务的线程有16个
+	   
+	 3.ChannelInboundHandlerAdapter 请求处理适配器，可继承这个类实现自定义的请求处理
+       重写这个类的channelRead()方法，自定义返回的值
+
+     4.FullHttpRequest 请求参数封装类，包含请求参数和请求路径等信息
+	 
+	 5.FullHttpResponse 返回值封装类，所有返回信息封装在这个类中 如下
+	   response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(value.getBytes("UTF-8"))); // 其中value是返回的数据
+	   
+	 6.ChannelHandlerContext 将返回值写入io 如下
+       if (!HttpUtil.isKeepAlive(fullRequest)) {
+              ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+          } else {
+              response.headers().set(CONNECTION, KEEP_ALIVE);
+              ctx.write(response);
+          }
+          ctx.flush();	 
+	 
