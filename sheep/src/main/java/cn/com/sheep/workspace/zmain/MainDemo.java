@@ -3,6 +3,9 @@ package cn.com.sheep.workspace.zmain;
 import cn.com.sheep.workspace.service.HelloFunction;
 import io.netty.util.internal.MathUtil;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,19 +16,31 @@ public class MainDemo {
 
     public static void main(String[] args) {
 
-        System.out.println(add().operation(1,9));
-        System.out.println(multiplication().operation(1,9));
 
-        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 8);
-        Integer integer = list.stream().reduce(0, (a, b) -> a + b);
-        System.out.println(integer);
+        try {
+            Thread.sleep(1000);
+            System.out.println("====000");
+            add();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("=============> 111");
+        }
 
+        System.out.println("============222");
     }
 
 
 
     public static HelloFunction add(){
-        return (a, b) -> a + b;
+
+        try {
+            int i = 0;
+            i = 1 /0;
+        } finally {
+            System.out.println("=====55555");
+        }
+        return null;
     }
 
     public static HelloFunction multiplication(){
